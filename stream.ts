@@ -1,7 +1,9 @@
 import type {
   Closer,
   Reader,
+  ReaderSync,
   Writer,
+  WriterSync,
 } from "https://deno.land/std@0.115.1/io/types.d.ts";
 
 // size_t ZSTD_CStreamInSize(void);    /**< recommended size for input buffer */
@@ -9,7 +11,7 @@ import type {
 // size_t ZSTD_DStreamInSize(void);    /*!< recommended size for input buffer */
 // size_t ZSTD_DStreamOutSize(void);   /*!< recommended size for output buffer. Guarantee to successfully flush at least one complete block in all circumstances. */
 
-export class ZstdCompressor implements Writer, Closer {
+export class ZstdCompressor implements Writer, WriterSync, Closer {
   constructor(buffer: ArrayBuffer, level: number = 3) {
     // const ctx = ZSTD_createCStream();
     // // note : since v1.3.0, ZSTD_CStream and ZSTD_CCtx are the same thing.
@@ -20,6 +22,11 @@ export class ZstdCompressor implements Writer, Closer {
   }
 
   async write(p: Uint8Array): Promise<number> {
+    const res = this.writeSync(p);
+    return Promise.resolve(res);
+  }
+
+  writeSync(p: Uint8Array): number {
     return 0;
   }
 
@@ -28,12 +35,17 @@ export class ZstdCompressor implements Writer, Closer {
   }
 }
 
-export class ZstdDeompressor implements Reader, Closer {
+export class ZstdDeompressor implements Reader, ReaderSync, Closer {
   constructor(buffer: ArrayBuffer) {
     // const ctx = ZSTD_createDStream();
   }
 
   async read(p: Uint8Array): Promise<number | null> {
+    const res = this.readSync(p);
+    return Promise.resolve(res);
+  }
+
+  readSync(p: Uint8Array): number | null {
     return 0;
   }
 
