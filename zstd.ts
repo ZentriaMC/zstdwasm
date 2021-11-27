@@ -108,3 +108,13 @@ export function decompress(
     module["_free"](heap, size);
   }
 }
+
+export function minCompressLevel(): number {
+  //int         ZSTD_minCLevel(void);               /*!< minimum negative compression level allowed */
+  return 0;
+}
+
+export function maxCompressLevel(): number {
+  //int         ZSTD_maxCLevel(void);               /*!< maximum compression level available */
+  return 0;
+}
